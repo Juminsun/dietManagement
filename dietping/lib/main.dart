@@ -59,10 +59,12 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate, // Cupertino 위젯 한국어 로케일 지원
       ],
       supportedLocales: [
-        const Locale('ko', 'KR'),
+        const Locale('ko', 'KR'), //한국어 지원
       ],
+      locale: Locale('ko', 'KR'), // 앱의 기본 로케일을 한국어로 설정
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -70,8 +72,8 @@ class MyApp extends StatelessWidget {
         platform: TargetPlatform.iOS,
       ),
       //home: IntroductionAnimationScreen(),
-      // home: LoginScreen(),
-       home: HomeScreen(),
+       home: LoginScreen(),
+       // home: HomeScreen(),
       // home: DesignCourseHomeScreen(),
     );
   }

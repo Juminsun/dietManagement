@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'design_course_app_theme.dart';
+import 'editInfo.dart';
+import 'bookmarkscreen.dart';
 
 class CourseInfoScreen extends StatefulWidget {
   @override
@@ -43,7 +45,12 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                   // 북마크 버튼
                   ElevatedButton.icon(
                     onPressed: () {
-                      // 북마크 기능 추가
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookmarkScreen(), // BookmarkScreen으로 이동
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF749BE4), // 요청된 파란색
@@ -52,8 +59,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                     ),
-                    icon: const Icon(Icons.bookmark,
-                        color: Colors.white, size: 28),
+                    icon: const Icon(Icons.bookmark, color: Colors.white, size: 28),
                     label: const Text(
                       '북마크',
                       style: TextStyle(
@@ -61,6 +67,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                         color: Colors.white,
                       ),
                     ),
+
                   ),
                   const SizedBox(height: 20.0),
                   // 로그아웃 버튼
@@ -90,7 +97,12 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                   ElevatedButton.icon(
                     onPressed: () {
                       // 회원정보 수정 로직 추가
-                      print("회원정보 수정 버튼 클릭됨");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserEditScreen(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF749BE4), // 요청된 파란색

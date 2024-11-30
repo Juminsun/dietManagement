@@ -1,24 +1,17 @@
-import 'package:best_flutter_ui_templates/hotel_booking/calendar_popup_view.dart';
+import 'package:best_flutter_ui_templates/hotel_booking/hotel_app_theme.dart';
 import 'package:best_flutter_ui_templates/hotel_booking/hotel_list_view.dart';
 import 'package:best_flutter_ui_templates/hotel_booking/model/hotel_list_data.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'hotel_app_theme.dart';
 
 class HotelHomeScreen extends StatefulWidget {
   @override
   _HotelHomeScreenState createState() => _HotelHomeScreenState();
 }
 
-class _HotelHomeScreenState extends State<HotelHomeScreen>
-    with TickerProviderStateMixin {
+class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
   List<HotelListData> hotelList = HotelListData.hotelList;
   final ScrollController _scrollController = ScrollController();
-
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now().add(const Duration(days: 5));
 
   @override
   void initState() {
@@ -39,6 +32,22 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       color: HotelAppTheme.buildLightTheme().backgroundColor,
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        /*floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final newHotel = await Navigator.push( //+ 버튼
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddHotelScreen(),
+              ),
+            );
+            if (newHotel != null) {
+              setState(() {
+                hotelList.add(newHotel);
+              });
+            }
+          },
+          child: Icon(Icons.add),
+        ),*/
         body: Stack(
           children: <Widget>[
             Column(
@@ -56,8 +65,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               return Column(
                                 children: <Widget>[
                                   getSearchBarUI(),
-                                  // 주석 처리된 날짜 및 방 수 UI
-                                  // getTimeDateUI(),
                                 ],
                               );
                             },
@@ -71,22 +78,31 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       child: ListView.builder(
                         itemCount: hotelList.length,
                         padding: const EdgeInsets.only(top: 8),
-                        scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
                           final int count =
                           hotelList.length > 10 ? 10 : hotelList.length;
-                          final Animation<double> animation =
-                          Tween<double>(begin: 0.0, end: 1.0).animate(
-                              CurvedAnimation(
-                                  parent: animationController!,
-                                  curve: Interval((1 / count) * index, 1.0,
-                                      curve: Curves.fastOutSlowIn)));
+                          final Animation<double> animation = Tween<double>(
+                            begin: 0.0,
+                            end: 1.0,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animationController!,
+                              curve: Interval(
+                                (1 / count) * index,
+                                1.0,
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                          );
                           animationController?.forward();
-                          return HotelListView(
-                            callback: () {},
+
+                          return HotelItem(
                             hotelData: hotelList[index],
                             animation: animation,
-                            animationController: animationController!,
+                            animationController: animationController,
+                            callback: () {
+                              // 여기에 아이템 클릭 시의 동작을 추가할 수 있습니다.
+                            },
                           );
                         },
                       ),
@@ -101,14 +117,12 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     );
   }
 
-  // AppBar UI
   Widget getAppBarUI() {
     return AppBar(
       title: Text('Community'),
     );
   }
 
-  // Search Bar UI
   Widget getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -122,27 +136,5 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         ),
       ),
     );
-  }
-}
-
-// ContestTabHeader 클래스는 HotelHomeScreen 클래스 외부에 별도로 정의
-class ContestTabHeader extends SliverPersistentHeaderDelegate {
-  final Widget searchUI;
-  ContestTabHeader(this.searchUI);
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return searchUI;
-  }
-
-  @override
-  double get maxExtent => 52.0;
-
-  @override
-  double get minExtent => 52.0;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
   }
 }

@@ -10,7 +10,7 @@ import 'package:best_flutter_ui_templates/fitness_app/my_diary/water_view.dart';
 import 'package:flutter/material.dart';
 
 import 'body_info_dialog.dart';
-import 'food_record_dialog.dart';
+// import 'food_record_dialog.dart';
 import 'meal_selection_dialog.dart';
 
 class MyDiaryScreen extends StatefulWidget {
@@ -529,14 +529,14 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
           },
           onRecordNutrients: () {
             Navigator.pop(context);
-            _showFoodRecordDialog(); // 영양 성분 기록 다이얼로그 호출
+            // _showFoodRecordDialog(); // 영양 성분 기록 다이얼로그 호출
           },
         );
       },
     );
   }
 
-  void _showFoodRecordDialog() {
+  /*void _showFoodRecordDialog() {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -563,7 +563,7 @@ class _MyDiaryScreenState extends State<MyDiaryScreen>
         );
       },
     );
-  }
+  }*/
   void _showTextRecordDialog() {
     showModalBottomSheet(
       context: context,
