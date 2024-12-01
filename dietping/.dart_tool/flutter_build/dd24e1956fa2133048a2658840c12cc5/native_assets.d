@@ -1,0 +1,1 @@
+ C:\\zooom\\dietManagement\\dietping\\.dart_tool\\flutter_build\\dd24e1956fa2133048a2658840c12cc5\\native_assets.yaml: 
