@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'design_course_app_theme.dart';
 import 'editInfo.dart';
+import 'bookmarkscreen.dart';
 
 class CourseInfoScreen extends StatefulWidget {
   @override
@@ -41,10 +42,17 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                     ),
                   ),
                   const SizedBox(height: 30.0),
+
                   // 북마크 버튼
                   ElevatedButton.icon(
                     onPressed: () {
-                      // 북마크 기능 추가
+                      // 북마크 화면으로 이동
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookmarkScreen(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF749BE4), // 요청된 파란색
@@ -53,8 +61,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                     ),
-                    icon: const Icon(Icons.bookmark,
-                        color: Colors.white, size: 28),
+                    icon: const Icon(Icons.bookmark, color: Colors.white, size: 28),
                     label: const Text(
                       '북마크',
                       style: TextStyle(
@@ -63,6 +70,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 20.0),
                   // 로그아웃 버튼
                   ElevatedButton.icon(

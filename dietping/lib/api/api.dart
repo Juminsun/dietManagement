@@ -15,4 +15,6 @@ class API{
   static const searchFood = "$hostConnect/searchFood";
   static const loadBookmarks = "$hostConnect/loadBookmarks";
   static const addrecipe = "$hostConnect/addrecipe";
+  static const fetchpost = "$hostConnect/fetchpost";
+  static const updateUser = "$hostConnect/updateUser";
 }

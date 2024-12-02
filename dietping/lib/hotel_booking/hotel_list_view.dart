@@ -1,17 +1,15 @@
-import 'package:best_flutter_ui_templates/hotel_booking/hotel_app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'model/hotel_list_data.dart';
+import 'package:best_flutter_ui_templates/hotel_booking/hotel_app_theme.dart';
+import 'package:best_flutter_ui_templates/hotel_booking/model/hotel_list_data.dart'; // HotelListData import
 
 class HotelListView extends StatelessWidget {
-  const HotelListView(
-      {Key? key,
-        this.hotelData,
-        this.animationController,
-        this.animation,
-        this.callback})
-      : super(key: key);
+  const HotelListView({
+    Key? key,
+    this.hotelData,
+    this.animationController,
+    this.animation,
+    this.callback,
+  }) : super(key: key);
 
   final VoidCallback? callback;
   final HotelListData? hotelData;
@@ -53,92 +51,44 @@ class HotelListView extends StatelessWidget {
                           children: <Widget>[
                             AspectRatio(
                               aspectRatio: 2,
-                              child: Image.asset(
-                                hotelData!.imagePath,
+                              child: Image.network(
+                                hotelData!.imagePath, // 이미지 표시
                                 fit: BoxFit.cover,
                               ),
                             ),
                             Container(
                               color: HotelAppTheme.buildLightTheme()
                                   .backgroundColor,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16, top: 8, bottom: 8),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              hotelData!.titleTxt,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 22,
-                                              ),
-                                            ),
-                                            Text(
-                                              hotelData!.subTxt,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.grey
-                                                      .withOpacity(0.8)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      hotelData!.titleTxt,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 16, top: 8),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          '${hotelData!.calories} kcal', // 칼로리 정보 표시
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 22,
-                                          ),
-                                        ),
-                                      ],
+                                    SizedBox(height: 8),
+                                    Text(
+                                      hotelData!.subTxt,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color:
+                                          Colors.grey.withOpacity(0.8)),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 8),
+                                    Text(
+                                      'Calories: ${hotelData!.calories}',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(32.0),
-                              ),
-                              onTap: () {},
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  color: HotelAppTheme.buildLightTheme()
-                                      .primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),

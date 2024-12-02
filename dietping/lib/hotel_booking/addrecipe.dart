@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart'; // 날짜 포맷을 위해 추가
+import 'package:intl/intl.dart';
 
 import '../api/api.dart';
 import '../model/loaduser.dart';
@@ -21,7 +21,7 @@ class AddRecipe extends StatelessWidget {
       appBar: AppBar(
         title: Text('새로운 레시피 추가'),
       ),
-      resizeToAvoidBottomInset: true, // 키보드가 올라올 때 화면 조정
+      resizeToAvoidBottomInset: true,
       body: AddRecipeForm(),
     );
   }
@@ -35,25 +35,23 @@ class AddRecipeForm extends StatefulWidget {
 class _AddRecipeFormState extends State<AddRecipeForm> {
   final _formKey = GlobalKey<FormState>();
 
-  // 컨트롤러 정의
   final TextEditingController titleController = TextEditingController();
   final TextEditingController postController = TextEditingController();
   final TextEditingController ingredientController = TextEditingController();
   final TextEditingController caloriesController = TextEditingController();
 
-  List<XFile> selectedImages = []; // 선택된 이미지 목록
+  List<XFile> selectedImages = [];
   final ImagePicker picker = ImagePicker();
   String? userID;
-  String? currentDate; // 오늘 날짜 저장 변수
+  String? currentDate;
 
   @override
   void initState() {
     super.initState();
-    _loadUserID(); // 사용자 ID 로드
-    _loadCurrentDate(); // 현재 날짜 로드
+    _loadUserID();
+    _loadCurrentDate();
   }
 
-  // 사용자 ID 로드
   Future<void> _loadUserID() async {
     User? user = await LoadUser.loadUser();
     setState(() {
@@ -61,16 +59,14 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     });
   }
 
-  // 오늘 날짜 로드
   void _loadCurrentDate() {
     final now = DateTime.now();
-    final formatter = DateFormat('yyyy-MM-dd'); // 원하는 날짜 형식
+    final formatter = DateFormat('yyyy-MM-dd');
     setState(() {
       currentDate = formatter.format(now);
     });
   }
 
-  // 갤러리에서 여러 이미지 선택
   Future<void> _selectMultipleImages() async {
     try {
       final List<XFile>? images = await picker.pickMultiImage();
@@ -84,14 +80,13 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     }
   }
 
-  // 카메라에서 이미지 선택
   Future<void> getImage(ImageSource source) async {
     try {
       final XFile? image = await picker.pickImage(source: source);
       if (image != null) {
         setState(() {
           if (selectedImages.length < 3) {
-            selectedImages.add(image); // 이미지 추가
+            selectedImages.add(image);
           } else {
             print("최대 3장의 이미지만 선택 가능합니다.");
           }
@@ -102,14 +97,12 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     }
   }
 
-  // 서버에 데이터 전송
   Future<void> saveRecipe() async {
     if (userID == null) {
       Fluttertoast.showToast(msg: "유저 ID를 찾을 수 없습니다.");
       return;
     }
 
-    // 필드 값 가져오기 (trim 처리)
     String titleTxt = titleController.text.trim();
     String postTxt = postController.text.trim();
     String ingredientTxt = ingredientController.text.trim();
@@ -117,7 +110,6 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     int? calories = caloriesTxt.isNotEmpty ? int.tryParse(caloriesTxt) : null;
 
     try {
-      // 서버 URL 설정
       final url = Uri.parse(API.addrecipe);
 
       var request = http.MultipartRequest('POST', url);
@@ -125,14 +117,12 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
       request.fields['title'] = titleTxt;
       request.fields['post'] = postTxt;
       request.fields['ingredient'] = ingredientTxt;
-      request.fields['date'] = currentDate!; // 오늘 날짜 추가
+      request.fields['date'] = currentDate!;
 
-      // 선택적 필드
       if (calories != null) {
         request.fields['cal'] = calories.toString();
       }
 
-      // 이미지 추가
       for (var img in selectedImages) {
         request.files.add(await http.MultipartFile.fromPath('images', img.path));
       }
@@ -146,7 +136,6 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
         if (jsonResponse['result'] == true) {
           Fluttertoast.showToast(msg: "레시피 저장 성공");
 
-          // 성공 후 HotelHomeScreen으로 이동
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HotelHomeScreen()),
@@ -164,7 +153,6 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     }
   }
 
-  // 이미지 삭제
   void _removeImage(int index) {
     setState(() {
       selectedImages.removeAt(index);
@@ -173,9 +161,9 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(  // 스크롤 가능하게 설정
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -183,43 +171,59 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
             children: [
               TextFormField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: '제목'),
+                decoration: InputDecoration(
+                  labelText: '제목',
+                  labelStyle: TextStyle(fontSize: 16),
+                ),
+                style: TextStyle(fontSize: 16),
                 validator: (value) => value!.trim().isEmpty ? "제목을 입력하세요" : null,
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: postController,
-                decoration: InputDecoration(labelText: '내용'),
+                decoration: InputDecoration(
+                  labelText: '내용',
+                  labelStyle: TextStyle(fontSize: 16),
+                ),
+                style: TextStyle(fontSize: 16),
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 validator: (value) => value!.trim().isEmpty ? "내용을 입력하세요" : null,
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: ingredientController,
-                decoration: InputDecoration(labelText: '재료'),
+                decoration: InputDecoration(
+                  labelText: '재료',
+                  labelStyle: TextStyle(fontSize: 16),
+                ),
+                style: TextStyle(fontSize: 16),
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 validator: (value) => value!.trim().isEmpty ? "재료를 입력하세요" : null,
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: caloriesController,
-                decoration: InputDecoration(labelText: '칼로리'),
+                decoration: InputDecoration(
+                  labelText: '칼로리',
+                  labelStyle: TextStyle(fontSize: 16),
+                ),
+                style: TextStyle(fontSize: 16),
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 20),
-
-              // 날짜 표시
               if (currentDate != null)
                 Text(
                   "오늘 날짜: $currentDate",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-
               SizedBox(height: 20),
-
-              // 사진 추가 섹션
               Text(
                 "사진 추가",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 16),
-
-              // 선택된 이미지 표시
               if (selectedImages.isNotEmpty)
                 Wrap(
                   spacing: 8,
@@ -268,6 +272,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     ),
                   ],
                 ),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
@@ -279,7 +284,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                   }
                 },
                 child: Text('저장하기'),
-              )
+              ),
             ],
           ),
         ),
@@ -287,7 +292,6 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     );
   }
 }
-
 
 Widget _buildIconCard({
   required IconData icon,
